@@ -13,7 +13,7 @@ public class GenerateRooms : EditorWindow
 
     [SerializeField] private float wallEdgePlacement;
 
-    [SerializeField] private float hallWayLength;
+    [SerializeField] private int hallWayLength;
 
     [MenuItem("Tools/Generate Rooms")]
     static void CreateGenerateRooms()
@@ -40,7 +40,7 @@ public class GenerateRooms : EditorWindow
 
         EditorGUILayout.LabelField("Create Hallway" );
 
-        hallWayLength = EditorGUILayout.IntField("Hallway length", roomLength);
+        hallWayLength = EditorGUILayout.IntField("Hallway length", hallWayLength);
 
 
         //roomLength = EditorGUILayout.ObjectField("Room Height", roomLength, typeof(int), false);
