@@ -11,6 +11,9 @@ public class GenerateRooms : EditorWindow
 
     [SerializeField] private int roomLength;
 
+    [SerializeField] private int tileSizeWorldViewX;
+    [SerializeField] private int tileSizeWorldViewY;
+
     [SerializeField] private float wallEdgePlacement;
 
     [SerializeField] private int hallWayLength;
@@ -36,7 +39,8 @@ public class GenerateRooms : EditorWindow
         roomWidth = EditorGUILayout.IntField("Room Width", roomWidth);
         roomLength = EditorGUILayout.IntField("Room length", roomLength);
 
-        
+        tileSizeWorldViewX = EditorGUILayout.IntField("Size of Prefab Width (World Space)", tileSizeWorldViewX);
+        tileSizeWorldViewY = EditorGUILayout.IntField("Size of Prefab Height(world Space", tileSizeWorldViewY);
 
         EditorGUILayout.LabelField("Create Hallway" );
 
@@ -60,26 +64,26 @@ public class GenerateRooms : EditorWindow
                     for (var j = 0; j <= roomWidth; j++)
                     {
                         //Place floor piece in place
-                        CreateSingleFloor(i, 0, j);
+                        CreateSingleFloor(i, 0, j*tileSizeWorldViewY);
                         
                         //CreateSingleCeiling(i, 0, j);
                         
 
                         //If corner, create two walls to make corner
                         //if((i == 0)|| (j == 0)){
-                            CreateCorners(i, j, roomWidth, roomLength);
+                            CreateCorners(i, j * tileSizeWorldViewY, roomWidth, roomLength);
                         //}
 
                         //If roomLength is larger that 2 but on edge, create walls on the long side edges
                         //else if((i > 0) || (i == roomLength)){
                             Debug.Log("Printing Wall Length: " + i);
-                            CreateWallsLength(i, j, roomWidth, roomLength);
+                            CreateWallsLength(i , j * tileSizeWorldViewY, roomWidth, roomLength);
                         //}
 
                         //if roomWidth is larger than 2, create walls on the horizontial edges
                         //else if((j > 0) || (j <= roomLength)){
                             Debug.Log("Printing Wall Width: " + j);
-                            CreateWallsWidth(i, j, roomWidth, roomLength);
+                            CreateWallsWidth(i, j * tileSizeWorldViewY, roomWidth, roomLength);
                             
                        // }
                     }
@@ -93,9 +97,9 @@ public class GenerateRooms : EditorWindow
         {
             for(int i = 0; i < hallWayLength; i++){
 
-                CreateSingleFloor(0, 0, i);
-                CreateWallWidthTop(0, 0, i, wallEdgePlacement);
-                CreateWallWidthBottom(0, 0, i, wallEdgePlacement);
+                CreateSingleFloor(0, 0, i * tileSizeWorldViewX);
+                CreateWallWidthTop(0, 0, i * tileSizeWorldViewX, wallEdgePlacement);
+                CreateWallWidthBottom(0, 0, i * tileSizeWorldViewX, wallEdgePlacement);
             }
         }
         GUI.enabled = false;
@@ -111,17 +115,17 @@ public class GenerateRooms : EditorWindow
 
         else if ((i == 0) && (j == roomWidth))
         {
-            CreateTopRightCorner(i, 0, j, wallEdgePlacement);
+            CreateTopRightCorner(i, 0, j * tileSizeWorldViewY, wallEdgePlacement);
 
 
         }
 
         else if ((i == wallSideL) && (j == 0)){
-            CreateBottomLeftCorner(i, 0, j, wallEdgePlacement);
+            CreateBottomLeftCorner(i * tileSizeWorldViewX, 0, j, wallEdgePlacement);
         }
 
         else if ((i == wallSideL) && (j == wallSideW)){
-            CreateBottomRightCorner(i, 0, j, wallEdgePlacement);
+            CreateBottomRightCorner(i * tileSizeWorldViewX, 0, j * tileSizeWorldViewY, wallEdgePlacement);
         }
 
     }
@@ -133,14 +137,14 @@ public class GenerateRooms : EditorWindow
         if ((i == 0) && ((j > 0) && (j < wallSideW)))
         {
 
-            CreateWallWidthTop(i, 0, j, wallEdgePlacement);
+            CreateWallWidthTop(i, 0, j * tileSizeWorldViewY, wallEdgePlacement);
 
         }
 //bottom
         else if ((i == wallSideL) && ((j > 0) && (j < wallSideW)))
         {
 
-            CreateWallWidthBottom(i, 0, j, wallEdgePlacement);
+            CreateWallWidthBottom(i * tileSizeWorldViewX, 0, j * tileSizeWorldViewY, wallEdgePlacement);
 
         }
 
@@ -153,13 +157,13 @@ public class GenerateRooms : EditorWindow
         if (((i > 0) && (i < wallSideL)) && ((j == 0)))
         {
 
-        CreateWallLengthLeft(i, 0, j, wallEdgePlacement);
+        CreateWallLengthLeft(i * tileSizeWorldViewX, 0, j, wallEdgePlacement);
             
         }
 
         else if ( ((i > 0) && (i < wallSideL)) && (j == wallSideW)){
 
-         CreateWallLengthRight(i, 0, j, wallEdgePlacement);
+         CreateWallLengthRight(i * tileSizeWorldViewX, 0, j * tileSizeWorldViewY, wallEdgePlacement);
         }
 
     }
